@@ -9,12 +9,17 @@
 class Grid  
 {
 	private:
+		struct Item
+		{
+			Sprite* sprite;
+			Rectangle box;
+		};
+
 		int m_columnCount;
 		int m_rowCount;
 		int m_spriteWidth;
 		int m_spriteHeight;
-		std::vector<std::vector<Sprite*>> m_sprites;
-		std::vector<std::vector<Rectangle>> m_items;
+		std::vector<std::vector<Item>> m_items;
 
 	public:
 		Grid();
@@ -23,6 +28,7 @@ class Grid
 
 		void SetGridItem(int x, int y, Sprite* spr);
 		void Draw();
-		void CheckItems(Vector2 mousePosition, Sprite* spr);
+		
+		bool CheckItems(Vector2 mousePosition, Sprite* spr);
 };
 #endif

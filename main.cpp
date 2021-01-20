@@ -16,12 +16,8 @@ int main(void)
     Grid grid(screenWidth, screenHeight, 3, 3);
     Sprite x("resources/sprX.png");
     Sprite o("resources/sprO.png");
-    // grid.SetGridItem(0, 0, &x);
-    // grid.SetGridItem(0, 1, &x);
-    // grid.SetGridItem(0, 2, &x);
-    // grid.SetGridItem(1, 0, &o);
-    // grid.SetGridItem(1, 1, &o);
-    // grid.SetGridItem(1, 2, &o);
+
+    bool xPiece = true;
 
     Vector2 mousePosition;
 
@@ -37,15 +33,19 @@ int main(void)
         // Input
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             mousePosition = GetMousePosition();
-        // if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
-        //     present.MoveLeft();
-        // if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D))
-        //     present.MoveRight();   
-        // if (IsKeyPressed(KEY_SPACE)) 
-        //     present.DropGift();
 
         // Update
-        grid.CheckItems(mousePosition, &x);
+        if (xPiece)
+        {
+            if (grid.CheckItems(mousePosition, &x))
+                xPiece = !xPiece;
+        }
+        else
+        {
+            if (grid.CheckItems(mousePosition, &o))
+                xPiece = !xPiece;
+        }
+        
 
         // Render
         BeginDrawing();
@@ -60,7 +60,6 @@ int main(void)
             }
             
             grid.Draw();
-            // x.Draw((int)grid.items[0][1].x, (int)grid.items[0][1].y);
 
         EndDrawing();
     }
