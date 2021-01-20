@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(TicTacToe VERSION 0.1.0)
 
-find_package(tmxparser)
 find_package(raylib)
 
 add_executable(TicTacToe main.cpp)
@@ -18,7 +17,7 @@ PRIVATE
 target_compile_features(TicTacToe
   PRIVATE cxx_std_11)
 
-target_link_libraries(TicTacToe tmxparser raylib)
+target_link_libraries(TicTacToe raylib)
 
 if (APPLE)
     target_link_libraries(TicTacToe "-framework CoreFoundation")
