@@ -68,8 +68,11 @@ bool Grid::CheckItems(Vector2 mousePosition, Sprite* spr)
                 && mousePosition.y > m_items[i][j].box.y
                 && mousePosition.y <= m_items[i][j].box.height + m_items[i][j].box.y)
                 {
-                    SetGridItem(i, j, spr);
-                    return true;
+                    if (m_items[i][j].sprite == NULL)
+                    {
+                        SetGridItem(i, j, spr);
+                        return true;
+                    }
                 }
             }        
         }
