@@ -7,12 +7,12 @@ add_executable(TicTacToe main.cpp)
 
 target_sources(TicTacToe
 PRIVATE
-    Sprite.hpp
-    Sprite.cpp
-    GraphicsUtility.cpp
-    GraphicsUtility.hpp
-    Grid.hpp
-    Grid.cpp)
+    Fotis/Sprite.hpp
+    Fotis/Sprite.cpp
+    Fotis/GraphicsUtility.cpp
+    Fotis/GraphicsUtility.hpp
+    Fotis/Grid.hpp
+    Fotis/Grid.cpp)
 
 target_compile_features(TicTacToe
   PRIVATE cxx_std_11)

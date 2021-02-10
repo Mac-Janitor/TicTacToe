@@ -1,4 +1,6 @@
-#include "Sprite.hpp"  
+#include "Sprite.hpp"
+
+using namespace Fotis;
 
 Sprite::Sprite()
 {

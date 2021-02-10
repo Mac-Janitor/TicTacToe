@@ -1,12 +1,15 @@
 #include "Grid.hpp"  
 	
+using namespace Fotis;
+
 Grid::Grid()
 {
 	
 }
 
-Grid::Grid(int screenWidth, int screenHeight, int columnCount, int rowCount)
+Grid::Grid(int screenWidth, int screenHeight, int columnCount, int rowCount, std::string backgroundImagePath)
 {
+    backgroundSpr = new Sprite(backgroundImagePath);
     m_columnCount = columnCount;
     m_rowCount = rowCount;
     m_spriteWidth = screenWidth / m_columnCount;
@@ -15,12 +18,12 @@ Grid::Grid(int screenWidth, int screenHeight, int columnCount, int rowCount)
 
     for (int i = 0; i < m_columnCount; i++)
     {
-        std::vector<Item> columnItems;
+        std::vector<Cell> columnItems;
         for (int j = 0; j < m_rowCount; j++)
         {
             int x = m_spriteWidth * i;
             int y = m_spriteHeight * j;
-            Item item = {NULL, (float)x, (float)y, (float)m_spriteWidth, (float)m_spriteHeight};
+            Cell item = {NULL, (float)x, (float)y, (float)m_spriteWidth, (float)m_spriteHeight};
             columnItems.push_back(item);
         }
         m_items.push_back(columnItems);
@@ -29,7 +32,7 @@ Grid::Grid(int screenWidth, int screenHeight, int columnCount, int rowCount)
 	
 Grid::~Grid()
 {
-	
+	delete backgroundSpr;
 }
 
 void Grid::SetGridItem(int x, int y, Sprite* spr)
@@ -39,6 +42,9 @@ void Grid::SetGridItem(int x, int y, Sprite* spr)
 
 void Grid::Draw()
 {
+    if (backgroundSpr != NULL)
+        backgroundSpr->Draw(0, 0);
+        
     for (int i = 0; i < m_columnCount; i++)
     {
         for (int j = 0; j < m_rowCount; j++)

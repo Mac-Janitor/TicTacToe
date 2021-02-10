@@ -2,8 +2,8 @@
 
 #include "raylib.h"
 
-#include "Sprite.hpp"
-#include "Grid.hpp"
+#include "Fotis/Sprite.hpp"
+#include "Fotis/Grid.hpp"
 
 int main(void)
 {
@@ -12,19 +12,13 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Tic Tac Toe");
 
-    Sprite board("resources/sprBoard.png");
-    Grid grid(screenWidth, screenHeight, 3, 3);
-    Sprite x("resources/sprX.png");
-    Sprite o("resources/sprO.png");
+    Fotis::Grid grid(screenWidth, screenHeight, 3, 3, "resources/sprBoard.png");
+    Fotis::Sprite x("resources/sprX.png");
+    Fotis::Sprite o("resources/sprO.png");
 
     bool xPiece = true;
 
     Vector2 mousePosition;
-
-    std::list<Sprite*> resourceList
-    {
-        &board
-    };
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -54,11 +48,6 @@ int main(void)
 
             float deltaTime = GetFrameTime();
 
-            for (Sprite* spr : resourceList) 
-            {
-                spr->Draw(0, 0);
-            }
-            
             grid.Draw();
 
         EndDrawing();
