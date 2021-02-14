@@ -5,6 +5,8 @@
 #include "Fotis/Sprite.hpp"
 #include "Fotis/Grid.hpp"
 
+#include "TicTacToeGrid.hpp"
+
 int main(void)
 {
     const int screenWidth = 2048 * 0.35;
@@ -12,7 +14,7 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Tic Tac Toe");
 
-    Fotis::Grid grid(screenWidth, screenHeight, 3, 3, "resources/sprBoard.png");
+    TicTacToeGrid grid(screenWidth, screenHeight, 3, 3, "resources/sprBoard.png");
     Fotis::Sprite x("resources/sprX.png");
     Fotis::Sprite o("resources/sprO.png");
 
@@ -39,6 +41,8 @@ int main(void)
             if (grid.CheckItems(mousePosition, &o))
                 xPiece = !xPiece;
         }
+
+        std::vector<Fotis::Cell> line = grid.CheckWinner();
         
 
         // Render
@@ -49,6 +53,19 @@ int main(void)
             float deltaTime = GetFrameTime();
 
             grid.Draw();
+
+            if (line.size() > 0)
+            {
+                float startX = line.front().box.width / 2 +  line.front().box.x;
+                float startY = line.front().box.height / 2 + line.front().box.y;
+                float endX = line.back().box.width / 2 + line.back().box.x;
+                float endY = line.back().box.height / 2 + line.back().box.y;
+
+                Vector2 startPos = {startX, startY};
+                Vector2 endPos = {endX, endY};
+
+                DrawLineEx(startPos, endPos, 5.0f, BLACK);
+            }
 
         EndDrawing();
     }

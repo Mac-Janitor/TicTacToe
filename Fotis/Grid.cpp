@@ -65,18 +65,18 @@ bool Grid::CheckItems(Vector2 mousePosition, Sprite* spr)
 {
     if (mousePosition.x >= 0 && mousePosition.y >= 0)
     {
-        for (int i = 0; i < m_columnCount; i++)
+        for (int y = 0; y < m_columnCount; y++)
         {
-            for (int j = 0; j < m_rowCount; j++)
+            for (int x = 0; x < m_rowCount; x++)
             {
-                if (mousePosition.x > m_items[i][j].box.x 
-                && mousePosition.x <= m_items[i][j].box.width + m_items[i][j].box.x 
-                && mousePosition.y > m_items[i][j].box.y
-                && mousePosition.y <= m_items[i][j].box.height + m_items[i][j].box.y)
+                if (mousePosition.x > m_items[x][y].box.x 
+                && mousePosition.x <= m_items[x][y].box.width + m_items[x][y].box.x 
+                && mousePosition.y > m_items[x][y].box.y
+                && mousePosition.y <= m_items[x][y].box.height + m_items[x][y].box.y)
                 {
-                    if (m_items[i][j].sprite == NULL)
+                    if (m_items[x][y].sprite == NULL)
                     {
-                        SetGridItem(i, j, spr);
+                        SetGridItem(x, y, spr);
                         return true;
                     }
                 }
@@ -85,4 +85,28 @@ bool Grid::CheckItems(Vector2 mousePosition, Sprite* spr)
     }
 
     return false;
+}
+
+std::vector<Cell> Grid::GetRow(int index)
+{
+    std::vector<Cell> row;
+
+    for (int i = 0; i < m_columnCount; i++)
+    {
+        row.push_back(m_items[i][index]);
+    }
+
+    return row;
+}
+
+std::vector<Cell> Grid::GetColumn(int index)
+{
+    std::vector<Cell> column;
+
+    for (int i = 0; i < m_rowCount; i++)
+    {
+        column.push_back(m_items[index][i]);
+    }
+
+    return column;
 }

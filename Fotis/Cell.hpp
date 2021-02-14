@@ -6,11 +6,22 @@
 
 namespace Fotis
 {
-	struct Cell  
+	class Cell  
 	{
-		Sprite* sprite;
-		Rectangle box;
+		public:
+			Sprite* sprite;
+			Rectangle box;
+
+		friend bool operator!= (const Cell &c1, const Cell &c2);
+		friend bool operator== (const Cell &c1, const Cell &c2);
+			
 	};
+
+
+    // bool operator!= (const Cell &c1, const Cell &c2)
+    // {
+    //     return (c1.sprite != c2.sprite);
+    // }	
 }
 
 #endif

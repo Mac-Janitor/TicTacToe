@@ -11,13 +11,16 @@ namespace Fotis
 {
 	class Grid  
 	{
-		private:
+		protected:
 			int m_columnCount;
 			int m_rowCount;
 			int m_spriteWidth;
 			int m_spriteHeight;
 			std::vector<std::vector<Cell>> m_items;
 			Sprite* backgroundSpr;
+
+			std::vector<Cell> GetRow(int index);
+			std::vector<Cell> GetColumn(int index);
 
 		public:
 			Grid();
