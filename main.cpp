@@ -2,8 +2,10 @@
 
 #include "raylib.h"
 
-#include "Sprite.hpp"
-#include "Grid.hpp"
+#include "Fotis/Sprite.hpp"
+#include "Fotis/Grid.hpp"
+
+#include "TicTacToeGrid.hpp"
 
 int main(void)
 {
@@ -12,19 +14,13 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Tic Tac Toe");
 
-    Sprite board("resources/sprBoard.png");
-    Grid grid(screenWidth, screenHeight, 3, 3);
-    Sprite x("resources/sprX.png");
-    Sprite o("resources/sprO.png");
+    TicTacToeGrid grid(screenWidth, screenHeight, 3, 3, "resources/sprBoard.png");
+    Fotis::Sprite x("resources/sprX.png");
+    Fotis::Sprite o("resources/sprO.png");
 
     bool xPiece = true;
 
     Vector2 mousePosition;
-
-    std::list<Sprite*> resourceList
-    {
-        &board
-    };
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -45,6 +41,11 @@ int main(void)
             if (grid.CheckItems(mousePosition, &o))
                 xPiece = !xPiece;
         }
+
+        std::vector<Fotis::Cell> line = grid.CheckWinner();
+        bool catsGame = false;
+        if (line.size() != 3)
+            catsGame = grid.CheckCatsGame();
         
 
         // Render
@@ -54,12 +55,28 @@ int main(void)
 
             float deltaTime = GetFrameTime();
 
-            for (Sprite* spr : resourceList) 
-            {
-                spr->Draw(0, 0);
-            }
-            
             grid.Draw();
+
+            if (line.size() == 3)
+            {
+                float startX = line.front().box.width / 2 +  line.front().box.x;
+                float startY = line.front().box.height / 2 + line.front().box.y;
+                float endX = line.back().box.width / 2 + line.back().box.x;
+                float endY = line.back().box.height / 2 + line.back().box.y;
+
+                Vector2 startPos = {startX, startY};
+                Vector2 endPos = {endX, endY};
+
+                DrawLineEx(startPos, endPos, 5.0f, BLACK);
+            }
+
+            if (catsGame)
+            {
+                Vector2 start = { screenWidth / 3 * 2, screenHeight / 3 };
+                Vector2 middle = { 0, screenHeight / 2 };
+                Vector2 end = { screenWidth / 3 * 2, screenHeight / 3 * 2 };
+                Fotis::GraphicsUtility::DrawLineBezierQuad(start, end, middle, 5.0f, RED);
+            }
 
         EndDrawing();
     }
