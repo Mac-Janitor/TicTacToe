@@ -15,5 +15,6 @@ class TicTacToeGrid : public Fotis::Grid
 		~TicTacToeGrid();
 
 		std::vector<Fotis::Cell> CheckWinner();
+		bool CheckCatsGame();
 };
 #endif

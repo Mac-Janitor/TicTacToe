@@ -16,21 +16,23 @@ TicTacToeGrid::~TicTacToeGrid()
 
 std::vector<Fotis::Cell> TicTacToeGrid::CheckWinner()
 {
+    int count = 0;
+
     // Check Rows
     for (int i = 0; i < m_rowCount; i++)
     {
+        count = 0;
         std::vector<Fotis::Cell> row = GetRow(i);
-        int columnMatchCount = 0;
 
         for (Fotis::Cell cell : row)
         {
             if (cell.sprite != NULL && cell == row.front())
             {
-                columnMatchCount++;
+                count++;
             }
         }
 
-        if (columnMatchCount == m_columnCount)
+        if (count == m_columnCount)
         {
             return row;
         }
@@ -39,46 +41,46 @@ std::vector<Fotis::Cell> TicTacToeGrid::CheckWinner()
     // Check Columns
     for (int i = 0; i < m_columnCount; i++)
     {
+        count = 0;
         std::vector<Fotis::Cell> column = GetColumn(i);
-        int rowMatchCount = 0;
 
         for (Fotis::Cell cell : column)
         {
             if (cell.sprite != NULL && cell == column.front())
             {
-                rowMatchCount++;
+                count++;
             }
         }
 
-        if (rowMatchCount == m_rowCount)
+        if (count == m_rowCount)
         {
             return column;
         }
     }
 
     std::vector<Fotis::Cell> diagonal;
+    count = 0;
     // Check Diagonals
     for (int i = 0; i < m_columnCount; i++)
     {
         diagonal.push_back(m_items[i][i]);
     }
-    int diagonalCount = 0;
 
     for (Fotis::Cell cell : diagonal)
     {
         if (cell.sprite != NULL && cell == diagonal.front())
         {
-            diagonalCount++;
+            count++;
         }
     }
 
-    if (diagonalCount == m_rowCount)
+    if (count == m_rowCount)
     {
         return diagonal;
     }
 
     diagonal.clear();
-    diagonalCount = 0;
+    count = 0;
     int x = 0;
     for (int y = m_columnCount - 1; y >= 0; y--)
     {
@@ -90,23 +92,37 @@ std::vector<Fotis::Cell> TicTacToeGrid::CheckWinner()
     {
         if (cell.sprite != NULL && cell == diagonal.front())
         {
-            diagonalCount++;
+            count++;
         }
     }
 
-    if (diagonalCount == m_rowCount)
+    if (count == m_rowCount)
     {
         return diagonal;
     }
 
+    return std::vector<Fotis::Cell> {};
+}
+
+bool TicTacToeGrid::CheckCatsGame()
+{
+    int count = 0;
     // Check Cats Game
     for (int x = 0; x < m_rowCount; x++)
     {
         for (int y = 0; y < m_columnCount; y++)
         {
-            
+            if (m_items[x][y].sprite != NULL)
+            {
+                count++;
+            }
         }
     }
 
-    return std::vector<Fotis::Cell> {};
+    if (count == m_rowCount * m_columnCount)
+    {
+        return true;
+    }  
+
+    return false;  
 }

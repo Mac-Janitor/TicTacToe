@@ -43,6 +43,9 @@ int main(void)
         }
 
         std::vector<Fotis::Cell> line = grid.CheckWinner();
+        bool catsGame = false;
+        if (line.size() != 3)
+            catsGame = grid.CheckCatsGame();
         
 
         // Render
@@ -54,7 +57,7 @@ int main(void)
 
             grid.Draw();
 
-            if (line.size() > 0)
+            if (line.size() == 3)
             {
                 float startX = line.front().box.width / 2 +  line.front().box.x;
                 float startY = line.front().box.height / 2 + line.front().box.y;
@@ -65,6 +68,14 @@ int main(void)
                 Vector2 endPos = {endX, endY};
 
                 DrawLineEx(startPos, endPos, 5.0f, BLACK);
+            }
+
+            if (catsGame)
+            {
+                Vector2 start = { screenWidth / 3 * 2, screenHeight / 3 };
+                Vector2 middle = { 0, screenHeight / 2 };
+                Vector2 end = { screenWidth / 3 * 2, screenHeight / 3 * 2 };
+                Fotis::GraphicsUtility::DrawLineBezierQuad(start, end, middle, 5.0f, RED);
             }
 
         EndDrawing();
