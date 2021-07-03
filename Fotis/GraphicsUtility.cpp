@@ -31,7 +31,7 @@ namespace Fotis
             const float step = 1.0f/24;
             
             Vector2 previous = startPos;
-            Vector2 current = { 0 };
+            Vector2 current = { 0, 0 };
             float t = 0.0f;
             
             for (int i = 0; i <= 24; i++)

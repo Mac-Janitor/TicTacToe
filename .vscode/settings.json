@@ -63,5 +63,9 @@
         "vector": "cpp",
         "list": "cpp",
         "iostream": "cpp"
+    },
+    "disasexpl.associations": {
+        "**/*.c": "${workspaceFolder}/build/${fileBasenameNoExtension}.s",
+        "**/*.cpp": "${workspaceFolder}/build/${fileBasenameNoExtension}.s"
     }
 }

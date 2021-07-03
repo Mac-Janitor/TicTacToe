@@ -23,7 +23,7 @@ Grid::Grid(int screenWidth, int screenHeight, int columnCount, int rowCount, std
         {
             int x = m_spriteWidth * i;
             int y = m_spriteHeight * j;
-            Cell item = {NULL, (float)x, (float)y, (float)m_spriteWidth, (float)m_spriteHeight};
+            Cell item = {NULL, {(float)x, (float)y, (float)m_spriteWidth, (float)m_spriteHeight}};
             columnItems.push_back(item);
         }
         m_items.push_back(columnItems);

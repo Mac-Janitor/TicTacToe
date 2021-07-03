@@ -13,14 +13,3 @@ namespace Fotis
         return c1.sprite == c2.sprite;
     }    
 }
-
-
-// Cell::Cell()
-// {
-	
-// }
-	
-// Cell::~Cell()
-// {
-	
-// }

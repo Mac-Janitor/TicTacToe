@@ -16,16 +16,20 @@ PRIVATE
     Fotis/Grid.hpp
     Fotis/Grid.cpp
     Fotis/Cell.hpp
-    Fotis/Cell.cpp)
+    Fotis/Cell.cpp
+    External/raygui/raygui.h)
 
 target_compile_features(TicTacToe
   PRIVATE cxx_std_11)
 
-target_link_libraries(TicTacToe raylib)
+target_link_libraries(TicTacToe PRIVATE raylib)
+
 
 if (APPLE)
-    target_link_libraries(TicTacToe "-framework CoreFoundation")
+    target_link_libraries(TicTacToe PRIVATE "-framework CoreFoundation")
 endif()
+
+target_include_directories(TicTacToe PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/external/")
 
 FILE(
     INSTALL
