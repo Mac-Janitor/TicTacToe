@@ -13,6 +13,7 @@
 #include "TicTacToeGrid.hpp"
 
 #define GLSL_VERSION            330
+#define SUPPORT_BUSY_WAIT_LOOP
 
 int main(void)
 {
