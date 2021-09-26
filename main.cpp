@@ -35,22 +35,25 @@ int main(void)
 
     // Fontsize is used to when loading the font to create the texture atlas
     // Without loading the font with the fontsize the text is likely to look blurry when scaled to large sizes 
-    int fontSize = 256;
-    Font font = LoadFontEx("resources/fonts/NorthernLights.ttf", fontSize, 0, 256);
+    int fontSize = 64;
 
-    GuiLoadStyleDefault();
-    GuiSetFont(font);
     std::string fontMessage = "Tic Tac Toe";
-    Rectangle textBounds = { 0, 0, 0, 0 };
 
-    GuiSetStyle(DEFAULT, TEXT_SIZE, fontSize);
+    // SDF font generation from TTF font
+    Font fontSDF = { 0 };
+    fontSDF.baseSize = 16;
+    fontSDF.charsCount = 95;
+    fontSDF.chars = LoadFontData("resources/fonts/AnonymousPro-Bold.ttf", 16, 0, 0, FONT_SDF);
+    Image atlas = GenImageFontAtlas(fontSDF.chars, &fontSDF.recs, 95, 16, 0, 1);
+    fontSDF.texture = LoadTextureFromImage(atlas);
+    UnloadImage(atlas);
+    Shader fontShader = LoadShader(0, FormatText("resources/shaders/glsl%i/sdf.fs", GLSL_VERSION));
+    SetTextureFilter(fontSDF.texture, FILTER_BILINEAR);    // Required for SDF font
+    Vector2 textSize = { 0.0f, 0.0f };
 
-    int fontSpacing = GuiGetStyle(DEFAULT, TEXT_SPACING);
+    textSize = MeasureTextEx(fontSDF, fontMessage.c_str(), fontSize, 0);
 
-    textBounds.width = (int)MeasureTextEx(guiFont, fontMessage.c_str(), fontSize, fontSpacing).x;
-    textBounds.height = (int)MeasureTextEx(guiFont, fontMessage.c_str(), fontSize, fontSpacing).y;
-    textBounds.x = screenWidth/2 - textBounds.width / 2;
-    textBounds.y = screenHeight/3.5;
+    Vector2 fontPosition = { screenWidth/2 - textSize.x/2, screenHeight/2 - textSize.y/2 };
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -109,7 +112,10 @@ int main(void)
                 Fotis::GraphicsUtility::DrawLineBezierQuad(start, end, middle, 5.0f, RED);
             }
 
-            GuiLabel(textBounds, fontMessage.c_str());
+            // NOTE: SDF fonts require a custom SDf shader to compute fragment color
+            BeginShaderMode(fontShader);    // Activate SDF font shader
+                DrawTextEx(fontSDF, fontMessage.c_str(), fontPosition, fontSize, 0, BLACK);
+            EndShaderMode();            // Activate our default shader for next drawings
 
         EndDrawing();
     }

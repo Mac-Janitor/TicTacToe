@@ -12,4 +12,4 @@ Windows 10 and MacOS. I have not tried running this program on Linux though it s
 
 # About
 
-Simple Tic Tac Toe game made with C++ and Raylib. Font loading is incredibly unoptimized at the moment and will cause the program to hang when it starts. I will be updating the font to use Signed Distanced Fields to resolve this problem.
+Simple Tic Tac Toe game made with C++ and Raylib.

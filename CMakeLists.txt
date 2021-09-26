@@ -38,7 +38,8 @@ target_include_directories(TicTacToe PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/extern
 
 # Set a symbolic link so exe can find the /resources folder
 set(link_src "${CMAKE_SOURCE_DIR}/resources")
-if(UNIX AND NOT APPLE) 
+# if(UNIX AND NOT APPLE) 
+if(UNIX) 
     set(link_dst "${CMAKE_CURRENT_BINARY_DIR}/resources") 
 else() 
     set(link_dst "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/resources") 
