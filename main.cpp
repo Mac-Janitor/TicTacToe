@@ -47,7 +47,7 @@ int main(void)
     Image atlas = GenImageFontAtlas(fontSDF.chars, &fontSDF.recs, 95, 16, 0, 1);
     fontSDF.texture = LoadTextureFromImage(atlas);
     UnloadImage(atlas);
-    Shader fontShader = LoadShader(0, FormatText("resources/shaders/glsl%i/sdf.fs", GLSL_VERSION));
+    Shader fontShader = LoadShader(0, FormatText("resources/shaders/glsl%i/outlineSDF.fs", GLSL_VERSION));
     SetTextureFilter(fontSDF.texture, FILTER_BILINEAR);    // Required for SDF font
     Vector2 textSize = { 0.0f, 0.0f };
 
