@@ -18,37 +18,17 @@ uniform vec4 colDiffuse;
 // Output fragment color
 out vec4 finalColor;
 
-// NOTE: Add here your custom variables
-const float offset = 1.0 / 128.0;
 const float smoothing = 1.0/16.0;
+const float outlineWidth = 5.0/16.0;
+const float outerEdgeCenter = 0.5 - outlineWidth;
+
+const vec3 outlineColor = vec3(1.0, 1.0, 1.0);
 
 void main()
 {
-	// finalColor = texture(texture0, fragTexCoord);
-
-
 	vec4 col = texture(texture0, fragTexCoord);
-	if (col.a > 0.53)
-		finalColor = fragColor;
-	else 
-	{
-		float a = texture(texture0, vec2(fragTexCoord.x + offset, fragTexCoord.y)).a +
-			texture(texture0, vec2(fragTexCoord.x, fragTexCoord.y - offset)).a +
-			texture(texture0, vec2(fragTexCoord.x - offset, fragTexCoord.y)).a +
-			texture(texture0, vec2(fragTexCoord.x, fragTexCoord.y + offset)).a;
-		if (a > 0.0)
-			// finalColor = vec4(0.0, 0.0, 0.0, 0.8);
-			finalColor = vec4(1.0, 1.0, 1.0, 1.0);
-		else
-			finalColor = fragColor;
-	}
-
-    // Texel color fetching from texture sampler
-    // NOTE: Calculate alpha using signed distance field (SDF)
-    float distance = texture(texture0, fragTexCoord).a;
-    float alpha = smoothstep(0.5 - smoothing, 0.5 + smoothing, distance);
-    
-    // Calculate final fragment color
-    finalColor = vec4(finalColor.rgb, finalColor.a*alpha);	
-
+    float distance = texture2D(texture0, fragTexCoord).a;
+    float alpha = smoothstep(outerEdgeCenter - smoothing, outerEdgeCenter + smoothing, distance);
+    float border = smoothstep(0.5 - smoothing, 0.5 + smoothing, distance);
+    finalColor = vec4( mix(outlineColor.rgb, fragColor.rgb, border), alpha );
 }

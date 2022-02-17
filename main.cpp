@@ -35,7 +35,7 @@ int main(void)
 
     // Fontsize is used to when loading the font to create the texture atlas
     // Without loading the font with the fontsize the text is likely to look blurry when scaled to large sizes 
-    int fontSize = 64;
+    float fontSize = 28.0;
 
     std::string fontMessage = "Tic Tac Toe";
 
@@ -43,7 +43,7 @@ int main(void)
     Font fontSDF = { 0 };
     fontSDF.baseSize = 16;
     fontSDF.charsCount = 95;
-    fontSDF.chars = LoadFontData("resources/fonts/AnonymousPro-Bold.ttf", 16, 0, 0, FONT_SDF);
+    fontSDF.chars = LoadFontData("resources/fonts/AnonymousPro-Bold.ttf", 64, 0, 0, FONT_SDF);
     Image atlas = GenImageFontAtlas(fontSDF.chars, &fontSDF.recs, 95, 16, 0, 1);
     fontSDF.texture = LoadTextureFromImage(atlas);
     UnloadImage(atlas);
