@@ -26,8 +26,7 @@ const vec3 outlineColor = vec3(1.0, 1.0, 1.0);
 
 void main()
 {
-	vec4 col = texture(texture0, fragTexCoord);
-    float distance = texture2D(texture0, fragTexCoord).a;
+    float distance = texture(texture0, fragTexCoord).a;
     float alpha = smoothstep(outerEdgeCenter - smoothing, outerEdgeCenter + smoothing, distance);
     float border = smoothstep(0.5 - smoothing, 0.5 + smoothing, distance);
     finalColor = vec4( mix(outlineColor.rgb, fragColor.rgb, border), alpha );
