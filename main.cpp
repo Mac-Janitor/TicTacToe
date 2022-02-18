@@ -9,6 +9,7 @@
 
 #include "Fotis/Sprite.hpp"
 #include "Fotis/Grid.hpp"
+#include "Fotis/UI.hpp"
 
 #include "TicTacToeGrid.hpp"
 
@@ -32,28 +33,10 @@ int main(void)
 
     // Load shader and setup location points and values
     Shader shader = LoadShader(0, FormatText("resources/shaders/glsl%i/blur_darken.fs", GLSL_VERSION));
-
-    // Fontsize is used to when loading the font to create the texture atlas
-    // Without loading the font with the fontsize the text is likely to look blurry when scaled to large sizes 
-    float fontSize = 28.0;
-
-    std::string fontMessage = "Tic Tac Toe";
-
-    // SDF font generation from TTF font
-    Font fontSDF = { 0 };
-    fontSDF.baseSize = 16;
-    fontSDF.charsCount = 95;
-    fontSDF.chars = LoadFontData("resources/fonts/AnonymousPro-Bold.ttf", 64, 0, 0, FONT_SDF);
-    Image atlas = GenImageFontAtlas(fontSDF.chars, &fontSDF.recs, 95, 16, 0, 1);
-    fontSDF.texture = LoadTextureFromImage(atlas);
-    UnloadImage(atlas);
     Shader fontShader = LoadShader(0, FormatText("resources/shaders/glsl%i/outlineSDF.fs", GLSL_VERSION));
-    SetTextureFilter(fontSDF.texture, FILTER_BILINEAR);    // Required for SDF font
-    Vector2 textSize = { 0.0f, 0.0f };
 
-    textSize = MeasureTextEx(fontSDF, fontMessage.c_str(), fontSize, 0);
-
-    Vector2 fontPosition = { screenWidth/2 - textSize.x/2, screenHeight/2 - textSize.y/2 };
+    Fotis::UI title("Tic Tac Toe", 28);
+    Fotis::UI subTitle("By: Jordan McClintock", 12);
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -114,7 +97,13 @@ int main(void)
 
             // NOTE: SDF fonts require a custom SDf shader to compute fragment color
             BeginShaderMode(fontShader);    // Activate SDF font shader
-                DrawTextEx(fontSDF, fontMessage.c_str(), fontPosition, fontSize, 0, BLACK);
+                Vector2 textSize = title.GetTextSize();
+                Vector2 position = { screenWidth/2 - textSize.x/2, screenHeight/3 - textSize.y/2 };
+                title.Draw(position);
+
+                textSize = subTitle.GetTextSize();
+                position = { screenWidth/2 - textSize.x/2, screenHeight/3 * 2 - textSize.y/2 };
+                subTitle.Draw(position);
             EndShaderMode();            // Activate our default shader for next drawings
 
         EndDrawing();

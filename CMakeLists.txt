@@ -19,6 +19,8 @@ PRIVATE
     Fotis/Grid.cpp
     Fotis/Cell.hpp
     Fotis/Cell.cpp
+    Fotis/UI.cpp
+    Fotis/UI.hpp
     External/raygui/raygui.h)
 
 target_compile_features(TicTacToe
