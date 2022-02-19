@@ -35,28 +35,50 @@ int main(void)
     Shader shader = LoadShader(0, FormatText("resources/shaders/glsl%i/blur_darken.fs", GLSL_VERSION));
     Shader fontShader = LoadShader(0, FormatText("resources/shaders/glsl%i/outlineSDF.fs", GLSL_VERSION));
 
-    Fotis::UI title("Tic Tac Toe", 28);
-    Fotis::UI subTitle("By: Jordan McClintock", 12);
+    Vector2 centerOriginPosition = { screenWidth/2, screenHeight/3 };
+    Fotis::UI title("Tic Tac Toe", 28, centerOriginPosition);
+
+    centerOriginPosition = { screenWidth/2, screenHeight/3 * 2 };
+    Fotis::UI subTitle("By: Jordan McClintock", 12, centerOriginPosition);
+
+    centerOriginPosition = { screenWidth/2, screenHeight/4 * 3 };
+    Fotis::UI startButton("Start!", 10, centerOriginPosition);
+
+    Color startButtonColor = BLACK;
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        mousePosition = {-1, -1};
+        bool mousePressed = false;
+        mousePosition = GetMousePosition();
         // Input
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-            mousePosition = GetMousePosition();
+            mousePressed = true;
 
         // Update
-        if (xPiece)
+        if (mousePressed)
         {
-            if (grid.CheckItems(mousePosition, &x))
-                xPiece = !xPiece;
+            if (xPiece)
+            {
+                if (grid.CheckItems(mousePosition, &x))
+                    xPiece = !xPiece;
+            }
+            else
+            {
+                if (grid.CheckItems(mousePosition, &o))
+                    xPiece = !xPiece;
+            }
+        }
+
+        if (startButton.Hover(mousePosition))
+        {
+            startButtonColor = WHITE;
         }
         else
         {
-            if (grid.CheckItems(mousePosition, &o))
-                xPiece = !xPiece;
+            startButtonColor = BLACK;
         }
+        
 
         std::vector<Fotis::Cell> line = grid.CheckWinner();
         bool catsGame = false;
@@ -97,13 +119,11 @@ int main(void)
 
             // NOTE: SDF fonts require a custom SDf shader to compute fragment color
             BeginShaderMode(fontShader);    // Activate SDF font shader
-                Vector2 textSize = title.GetTextSize();
-                Vector2 position = { screenWidth/2 - textSize.x/2, screenHeight/3 - textSize.y/2 };
-                title.Draw(position);
+                title.Draw(BLACK);
 
-                textSize = subTitle.GetTextSize();
-                position = { screenWidth/2 - textSize.x/2, screenHeight/3 * 2 - textSize.y/2 };
-                subTitle.Draw(position);
+                subTitle.Draw(BLACK);
+
+                startButton.Draw(startButtonColor);
             EndShaderMode();            // Activate our default shader for next drawings
 
         EndDrawing();

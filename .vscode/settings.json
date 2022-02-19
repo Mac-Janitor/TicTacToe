@@ -67,5 +67,6 @@
     "disasexpl.associations": {
         "**/*.c": "${workspaceFolder}/build/${fileBasenameNoExtension}.s",
         "**/*.cpp": "${workspaceFolder}/build/${fileBasenameNoExtension}.s"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }

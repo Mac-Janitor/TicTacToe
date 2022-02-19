@@ -16,15 +16,17 @@ namespace Fotis
 			Font m_font;
 			std::string m_label;
 			float m_fontSize;
+			Vector2 m_position;
+			Vector2 m_textSize;
 
 		public:
 
-			UI(std::string label, float fontSize);
+			UI(std::string label, float fontSize, Vector2 centerOriginPosition);
 			~UI();
 
-			void Draw(Vector2 position);
-			Vector2 GetTextSize();
+			void Draw(Color color);
 
+			bool Hover(Vector2 mousePosition);
 	};
 }
 #endif

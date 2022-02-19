@@ -2,7 +2,7 @@
 	
 namespace Fotis
 {
-    UI::UI(std::string label, float fontSize)
+    UI::UI(std::string label, float fontSize, Vector2 centerOriginPosition)
     {
         // SDF font generation from TTF font
         m_label = label;
@@ -15,21 +15,29 @@ namespace Fotis
         m_font.texture = LoadTextureFromImage(atlas);
         UnloadImage(atlas);
         SetTextureFilter(m_font.texture, FILTER_BILINEAR);    // Required for SDF font
-        Vector2 textSize = { 0.0f, 0.0f };
 
+        m_textSize = MeasureTextEx(m_font, m_label.c_str(), m_fontSize, 0);
+        m_position = { centerOriginPosition.x - m_textSize.x/2, centerOriginPosition.y - m_textSize.y/2 };
     }
         
     UI::~UI()
     {
     }
 
-    void UI::Draw(Vector2 position)
+    void UI::Draw(Color color)
     {
-        DrawTextEx(m_font, m_label.c_str(), position, m_fontSize, 0, BLACK);
+        DrawTextEx(m_font, m_label.c_str(), m_position, m_fontSize, 0, color);
     }
 
-    Vector2 UI::GetTextSize()
+    bool UI::Hover(Vector2 mousePosition)
     {
-        return MeasureTextEx(m_font, m_label.c_str(), m_fontSize, 0);
+        if (mousePosition.x > m_position.x && 
+            mousePosition.y > m_position.y &&
+            mousePosition.x < m_position.x + m_textSize.x &&
+            mousePosition.y < m_position.y + m_textSize.y)
+        {
+            return true;   
+        }
+        return false;
     }
 }
