@@ -1,6 +1,6 @@
 # Dependencies
 
-This program requires Raylib to run. I would suggest using vcpkg to install Raylib easily. Otherwise you will need to download raylib source and install it in order for CMake to recognize the library. I will provide better instructions at a later time. I have been using Version 3.0 of Raylib because there was an unresolved defect that caused problems on Mac.
+This program requires Raylib to run. I would suggest using vcpkg to install Raylib easily. Otherwise you will need to download raylib source and install it in order for CMake to recognize the library. I will provide better instructions at a later time. This program was made with version 4.0.0 of raylib.
 
 # Directions
 
