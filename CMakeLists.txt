@@ -1,8 +1,5 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.14.0)
 project(TicTacToe VERSION 0.1.0)
-
-# find_package(glfw CONFIG REQUIRED)
-find_package(raylib 4.0.0 CONFIG REQUIRED)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -26,8 +23,32 @@ PRIVATE
 target_compile_features(TicTacToe
     PRIVATE cxx_std_11)
 
-target_link_libraries(TicTacToe PRIVATE ${raylib_LIBRARIES})
-target_include_directories(TicTacToe PRIVATE ${raylib_INCLUDE_DIRS})
+find_package(raylib 4.0.0 CONFIG QUIET)
+
+if (NOT raylib_FOUND)
+    include(FetchContent)
+
+    message("Raylib not found. Attempting to install now...")
+
+    FetchContent_Declare(
+    raylib
+    URL "https://github.com/raysan5/raylib/archive/refs/tags/4.0.0.zip"
+    )
+
+    FetchContent_GetProperties(raylib)
+    FetchContent_Populate(raylib)
+    add_subdirectory(${raylib_SOURCE_DIR} ${raylib_BINARY_DIR})
+
+
+    FetchContent_MakeAvailable(raylib)
+
+    target_link_libraries(TicTacToe PRIVATE raylib)
+    target_include_directories(TicTacToe PRIVATE raylib)  
+else()
+    target_link_libraries(TicTacToe PRIVATE ${raylib_LIBRARIES})
+    target_include_directories(TicTacToe PRIVATE ${raylib_INCLUDE_DIRS})
+endif()
+
 if (WIN32)
     target_link_libraries(TicTacToe PRIVATE winmm)
 endif()
