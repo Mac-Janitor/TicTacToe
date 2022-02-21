@@ -1,11 +1,6 @@
 #include <list>
 
 #include "raylib.h"
-#define RAYGUI_IMPLEMENTATION
-#define RAYGUI_SUPPORT_RICONS
-#include "raygui/raygui.h"
-
-#undef RAYGUI_IMPLEMENTATION  
 
 #include "Fotis/Sprite.hpp"
 #include "Fotis/Grid.hpp"
@@ -32,8 +27,8 @@ int main(void)
     Vector2 mousePosition;
 
     // Load shader and setup location points and values
-    Shader shader = LoadShader(0, FormatText("resources/shaders/glsl%i/blur_darken.fs", GLSL_VERSION));
-    Shader fontShader = LoadShader(0, FormatText("resources/shaders/glsl%i/outlineSDF.fs", GLSL_VERSION));
+    Shader shader = LoadShader(0, TextFormat("resources/shaders/glsl%i/blur_darken.fs", GLSL_VERSION));
+    Shader fontShader = LoadShader(0, TextFormat("resources/shaders/glsl%i/outlineSDF.fs", GLSL_VERSION));
 
     Vector2 centerOriginPosition = { screenWidth/2, screenHeight/3 };
     Fotis::UI title("Tic Tac Toe", 28, centerOriginPosition);

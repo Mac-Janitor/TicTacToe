@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(TicTacToe VERSION 0.1.0)
 
-find_package(raylib 3.0.0 CONFIG REQUIRED)
+# find_package(glfw CONFIG REQUIRED)
+find_package(raylib 4.0.0 CONFIG REQUIRED)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -20,8 +21,7 @@ PRIVATE
     Fotis/Cell.hpp
     Fotis/Cell.cpp
     Fotis/UI.cpp
-    Fotis/UI.hpp
-    External/raygui/raygui.h)
+    Fotis/UI.hpp)
 
 target_compile_features(TicTacToe
     PRIVATE cxx_std_11)
