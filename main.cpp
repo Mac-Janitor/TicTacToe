@@ -80,33 +80,38 @@ int main(void)
             }
         }
 
-        if (startButton.Hover(mousePosition))
+        if (gameState == START_MENU)
         {
-            startButtonColor = GRAY;
-            if (mousePressed)
+            if (startButton.Hover(mousePosition))
             {
-                gameState = GAME_RUNNING;
+                startButtonColor = GRAY;
+                if (mousePressed)
+                {
+                    gameState = GAME_RUNNING;
+                }
             }
-        }
-        else
-        {
-            startButtonColor = BLACK;
+            else
+            {
+                startButtonColor = BLACK;
+            }                 
         }
 
-        if (startOverButton.Hover(mousePosition))
+        if (gameState == GAME_OVER)
         {
-            startButtonColor = GRAY;
-            if (mousePressed)
+            if (startOverButton.Hover(mousePosition))
             {
-                gameState = GAME_RUNNING;
-                grid.Reset();
+                startButtonColor = GRAY;
+                if (mousePressed)
+                {
+                    gameState = GAME_RUNNING;
+                    grid.Reset();
+                }
             }
+            else
+            {
+                startButtonColor = BLACK;
+            }                 
         }
-        else
-        {
-            startButtonColor = BLACK;
-        }        
-        
 
         std::vector<Fotis::Cell> line = grid.CheckWinner();
         bool catsGame = false;
@@ -154,6 +159,7 @@ int main(void)
                 Vector2 middle = { 0, screenHeight / 2 };
                 Vector2 end = { screenWidth / 3 * 2, screenHeight / 3 * 2 };
                 Fotis::GraphicsUtility::DrawLineBezierQuad(start, end, middle, 5.0f, RED);
+                gameState = GAME_OVER;
             }
 
             if (gameState == START_MENU)
