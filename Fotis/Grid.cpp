@@ -110,3 +110,21 @@ std::vector<Cell> Grid::GetColumn(int index)
 
     return column;
 }
+
+void Grid::Reset()
+{
+    m_items.clear();
+
+    for (int i = 0; i < m_columnCount; i++)
+    {
+        std::vector<Cell> columnItems;
+        for (int j = 0; j < m_rowCount; j++)
+        {
+            int x = m_spriteWidth * i;
+            int y = m_spriteHeight * j;
+            Cell item = {NULL, {(float)x, (float)y, (float)m_spriteWidth, (float)m_spriteHeight}};
+            columnItems.push_back(item);
+        }
+        m_items.push_back(columnItems);
+    }     
+}

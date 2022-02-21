@@ -16,6 +16,13 @@ int main(void)
     const int screenWidth = 2048 * 0.35;
     const int screenHeight = 2048 * 0.35;
 
+    enum GAME_STATE
+    {
+        START_MENU,
+        GAME_RUNNING,
+        GAME_OVER   
+    };
+
     InitWindow(screenWidth, screenHeight, "Tic Tac Toe");
 
     TicTacToeGrid grid(screenWidth, screenHeight, 3, 3, "resources/sprBoard.png");
@@ -39,7 +46,15 @@ int main(void)
     centerOriginPosition = { screenWidth/2, screenHeight/4 * 3 };
     Fotis::UI startButton("Start!", 10, centerOriginPosition);
 
+    centerOriginPosition = { screenWidth/2, screenHeight/3 };
+    Fotis::UI gameOver("Game Over!", 28, centerOriginPosition);
+
+    centerOriginPosition = { screenWidth/2, screenHeight/4 * 3 };
+    Fotis::UI startOverButton("Play Again?", 10, centerOriginPosition);    
+
     Color startButtonColor = BLACK;
+
+    GAME_STATE gameState = START_MENU;
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -51,7 +66,7 @@ int main(void)
             mousePressed = true;
 
         // Update
-        if (mousePressed)
+        if (mousePressed && gameState == GAME_RUNNING)
         {
             if (xPiece)
             {
@@ -67,12 +82,30 @@ int main(void)
 
         if (startButton.Hover(mousePosition))
         {
-            startButtonColor = WHITE;
+            startButtonColor = GRAY;
+            if (mousePressed)
+            {
+                gameState = GAME_RUNNING;
+            }
         }
         else
         {
             startButtonColor = BLACK;
         }
+
+        if (startOverButton.Hover(mousePosition))
+        {
+            startButtonColor = GRAY;
+            if (mousePressed)
+            {
+                gameState = GAME_RUNNING;
+                grid.Reset();
+            }
+        }
+        else
+        {
+            startButtonColor = BLACK;
+        }        
         
 
         std::vector<Fotis::Cell> line = grid.CheckWinner();
@@ -86,10 +119,19 @@ int main(void)
 
             // float deltaTime = GetFrameTime();
 
-            BeginShaderMode(shader);
+            if (gameState == START_MENU)
+            {
+                BeginShaderMode(shader);
+                    ClearBackground(RAYWHITE);
+                    grid.Draw();
+                EndShaderMode();
+            }
+            else
+            {
                 ClearBackground(RAYWHITE);
                 grid.Draw();
-            EndShaderMode();
+            }
+
 
             if (line.size() == 3)
             {
@@ -102,6 +144,8 @@ int main(void)
                 Vector2 endPos = {endX, endY};
 
                 DrawLineEx(startPos, endPos, 5.0f, BLACK);
+
+                gameState = GAME_OVER;
             }
 
             if (catsGame)
@@ -112,14 +156,27 @@ int main(void)
                 Fotis::GraphicsUtility::DrawLineBezierQuad(start, end, middle, 5.0f, RED);
             }
 
-            // NOTE: SDF fonts require a custom SDf shader to compute fragment color
-            BeginShaderMode(fontShader);    // Activate SDF font shader
-                title.Draw(BLACK);
+            if (gameState == START_MENU)
+            {
+                // NOTE: SDF fonts require a custom SDf shader to compute fragment color
+                BeginShaderMode(fontShader);    // Activate SDF font shader
+                    title.Draw(BLACK);
 
-                subTitle.Draw(BLACK);
+                    subTitle.Draw(BLACK);
 
-                startButton.Draw(startButtonColor);
-            EndShaderMode();            // Activate our default shader for next drawings
+                    startButton.Draw(startButtonColor);
+                EndShaderMode();            // Activate our default shader for next drawings
+            }
+
+            if (gameState == GAME_OVER)
+            {
+                // NOTE: SDF fonts require a custom SDf shader to compute fragment color
+                BeginShaderMode(fontShader);    // Activate SDF font shader
+                    gameOver.Draw(BLACK);
+
+                    startOverButton.Draw(startButtonColor);
+                EndShaderMode();            // Activate our default shader for next drawings                
+            }
 
         EndDrawing();
     }

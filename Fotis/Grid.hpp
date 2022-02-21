@@ -29,6 +29,8 @@ namespace Fotis
 
 			void SetGridItem(int x, int y, Sprite* spr);
 			void Draw();
+
+			void Reset();
 			
 			bool CheckItems(Vector2 mousePosition, Sprite* spr);
 	};
