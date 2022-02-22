@@ -59,18 +59,26 @@ endif()
 
 target_include_directories(TicTacToe PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/external/")
 
-# Set a symbolic link so exe can find the /resources folder
-set(link_src "${CMAKE_SOURCE_DIR}/resources")
-# if(UNIX AND NOT APPLE) 
-if(UNIX) 
-    set(link_dst "${CMAKE_CURRENT_BINARY_DIR}/resources") 
-else() 
-    set(link_dst "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/resources") 
-endif() 
-add_custom_command( 
-    TARGET TicTacToe 
-    POST_BUILD COMMAND ${CMAKE_COMMAND} 
-        -E create_symlink ${link_src} ${link_dst} 
-    DEPENDS ${link_dst} 
-    COMMENT "symbolic link ${link_src} => ${link_dst}" 
-)
+set(Fotis_USE_SYMBOLIC_LINKS OFF CACHE BOOL "")
+
+if (CMAKE_GENERATOR MATCHES "Visual Studio" AND NOT Fotis_USE_SYMBOLIC_LINKS)
+    add_custom_command(TARGET TicTacToe POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${PROJECT_SOURCE_DIR}/resources"
+            $<TARGET_FILE_DIR:TicTacToe>/resources)
+else()
+    # Set a symbolic link so exe can find the /resources folder
+    set(link_src "${CMAKE_SOURCE_DIR}/resources")
+    if(UNIX) 
+        set(link_dst "${CMAKE_CURRENT_BINARY_DIR}/resources") 
+    else() 
+        set(link_dst "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/resources") 
+    endif() 
+    add_custom_command( 
+        TARGET TicTacToe 
+        POST_BUILD COMMAND ${CMAKE_COMMAND} 
+            -E create_symlink ${link_src} ${link_dst} 
+        DEPENDS ${link_dst} 
+        COMMENT "symbolic link ${link_src} => ${link_dst}" 
+    )
+endif()
