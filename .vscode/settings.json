@@ -68,5 +68,10 @@
         "**/*.c": "${workspaceFolder}/build/${fileBasenameNoExtension}.s",
         "**/*.cpp": "${workspaceFolder}/build/${fileBasenameNoExtension}.s"
     },
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Disabled",
+    "cmake.buildBeforeRun": true,
+    // Updating the current working directory makes it so the "Launch" buttons included in the CMake extension will find the resources folder
+    "cmake.debugConfig": {
+        "cwd": "${workspaceRoot}",
+    }    
 }

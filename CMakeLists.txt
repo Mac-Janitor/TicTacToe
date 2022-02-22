@@ -62,12 +62,13 @@ target_include_directories(TicTacToe PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/extern
 set(Fotis_USE_SYMBOLIC_LINKS OFF CACHE BOOL "")
 
 if (CMAKE_GENERATOR MATCHES "Visual Studio" AND NOT Fotis_USE_SYMBOLIC_LINKS)
-    add_custom_command(TARGET TicTacToe POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${PROJECT_SOURCE_DIR}/resources"
-            $<TARGET_FILE_DIR:TicTacToe>/resources)
+    # Find the /resources folder in visual studio
+    set_target_properties(
+        TicTacToe PROPERTIES
+        VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 else()
     # Set a symbolic link so exe can find the /resources folder
+    # (Note windows requires running as admin to use symbolic links)
     set(link_src "${CMAKE_SOURCE_DIR}/resources")
     if(UNIX) 
         set(link_dst "${CMAKE_CURRENT_BINARY_DIR}/resources") 
